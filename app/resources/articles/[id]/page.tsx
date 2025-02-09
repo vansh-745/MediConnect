@@ -43,7 +43,7 @@ interface ArticlePageProps {
   params: { id: string };
 }
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
+export default async function ArticlePage({ params }: ArticlePageProps) {
   const article = await getArticleById(params.id);
 
   if (!article) {
