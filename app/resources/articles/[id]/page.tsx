@@ -21,11 +21,12 @@ interface Article {
   imageUrl?: string;
 }
 
-interface PageProps {
+type Props = {
   params: {
     id: string;
   };
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 async function getArticleById(id: string): Promise<Article> {
   const article = articleData[Number(id) as keyof typeof articleData];
@@ -45,9 +46,9 @@ async function getArticleById(id: string): Promise<Article> {
   };
 }
 
-export default async function ArticlePage({ params }: PageProps) {
+export default function ArticlePage({ params }: Props) {
   const { id } = params;
-  const article = await getArticleById(id);
+  const article = getArticleById(id);
   const categoryColor = categoryColors[article.category] || { bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300" };
 
   return (
