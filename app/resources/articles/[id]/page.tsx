@@ -21,11 +21,11 @@ interface Article {
   imageUrl?: string;
 }
 
-async function getArticleById(id: string): Promise<Article> {
+async function getArticleById(id: string): Promise<Article | null> {
   const article = articleData[Number(id) as keyof typeof articleData];
   
   if (!article) {
-    notFound();
+    return null;
   }
   
   return {
@@ -43,9 +43,8 @@ interface ArticlePageProps {
   params: { id: string };
 }
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { id } = params;
-  const article = await getArticleById(id);
+export default async function ArticlePage({ params }: { params: { id: string } }) {
+  const article = await getArticleById(params.id);
 
   if (!article) {
     notFound();
