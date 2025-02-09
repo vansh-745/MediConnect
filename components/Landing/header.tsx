@@ -67,6 +67,10 @@ export default function Header() {
     },
   ];
 
+  const handlePatientLogin = () => {
+    router.push('/auth?type=patient');
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -89,7 +93,7 @@ export default function Header() {
                           {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
+                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 bg-background border rounded-lg shadow-lg">
                             {item.items.map((subItem) => (
                               <li key={subItem.title}>
                                 <Link
@@ -120,9 +124,12 @@ export default function Header() {
 
             <div className="flex items-center space-x-4">
               <ThemeToggle />
-              <Button variant="ghost" onClick={() => router.push("/auth")}>
+              <button
+                onClick={handlePatientLogin}
+                className="px-4 py-2 bg-primary dark:text-black text-white rounded-md hover:bg-primary-dark"
+              >
                 Patient Login
-              </Button>
+              </button>
               <Button onClick={() => router.push("/auth")}>
                 Find Care
                 <MoveRight className="ml-2 h-4 w-4" />
@@ -175,16 +182,12 @@ export default function Header() {
                 </div>
               ))}
               <div className="space-y-2 border-t pt-4">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    router.push("/auth");
-                    setIsOpen(false);
-                  }}
+                <button
+                  onClick={handlePatientLogin}
+                  className="w-full justify-start px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
                 >
                   Patient Login
-                </Button>
+                </button>
                 <Button
                   className="w-full justify-start"
                   onClick={() => {
