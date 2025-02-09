@@ -39,14 +39,23 @@ async function getArticleById(id: string): Promise<Article> {
   };
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { id: string }
-}) {
+interface ArticlePageProps {
+  params: { id: string };
+}
+
+export default async function ArticlePage({ params }: ArticlePageProps) {
   const { id } = params;
   const article = await getArticleById(id);
-  const categoryColor = categoryColors[article.category || ''] || { bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300" };
+
+  if (!article) {
+    notFound();
+  }
+
+  const categoryColor =
+    categoryColors[article.category || ""] || {
+      bg: "bg-gray-100 dark:bg-gray-800",
+      text: "text-gray-700 dark:text-gray-300",
+    };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -54,21 +63,25 @@ export default async function ArticlePage({
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
-              <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium ${categoryColor.bg} ${categoryColor.text}`}>
+              <span
+                className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium ${categoryColor.bg} ${categoryColor.text}`}
+              >
                 {article.category}
               </span>
-              
+
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
                 {article.title}
               </h1>
-              
+
               <div className="flex flex-wrap items-center gap-6 text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <User className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{article.author}</p>
+                    <p className="font-medium text-foreground">
+                      {article.author}
+                    </p>
                     <p className="text-sm">Medical Writer</p>
                   </div>
                 </div>
@@ -88,7 +101,7 @@ export default async function ArticlePage({
             <div className="mb-10 rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src={article.imageUrl}
-                alt={article.title || ''}
+                alt={article.title || ""}
                 width={1200}
                 height={600}
                 className="w-full h-[500px] object-cover"
@@ -98,8 +111,11 @@ export default async function ArticlePage({
 
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <div className="space-y-6">
-              {article.content?.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {article.content?.split("\n\n").map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="text-gray-700 dark:text-gray-300 leading-relaxed"
+                >
                   {paragraph}
                 </p>
               ))}
@@ -126,4 +142,4 @@ export default async function ArticlePage({
       </div>
     </div>
   );
-} 
+}
