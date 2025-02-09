@@ -13,20 +13,13 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
 
 interface Article {
   id: string;
-  title: string;
-  content: string;
-  author: string;
-  publishedDate: string;
-  category: string;
+  title?: string;
+  content?: string;
+  author?: string;
+  publishedDate?: string;
+  category?: string;
   imageUrl?: string;
 }
-
-type Props = {
-  params: {
-    id: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
 
 async function getArticleById(id: string): Promise<Article> {
   const article = articleData[Number(id) as keyof typeof articleData];
@@ -46,10 +39,14 @@ async function getArticleById(id: string): Promise<Article> {
   };
 }
 
-export default function ArticlePage({ params }: Props) {
+export default async function ArticlePage({
+  params,
+}: {
+  params: { id: string }
+}) {
   const { id } = params;
-  const article = getArticleById(id);
-  const categoryColor = categoryColors[article.category] || { bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300" };
+  const article = await getArticleById(id);
+  const categoryColor = categoryColors[article.category || ''] || { bg: "bg-gray-100 dark:bg-gray-800", text: "text-gray-700 dark:text-gray-300" };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -91,7 +88,7 @@ export default function ArticlePage({ params }: Props) {
             <div className="mb-10 rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src={article.imageUrl}
-                alt={article.title}
+                alt={article.title || ''}
                 width={1200}
                 height={600}
                 className="w-full h-[500px] object-cover"
@@ -101,7 +98,7 @@ export default function ArticlePage({ params }: Props) {
 
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <div className="space-y-6">
-              {article.content.split('\n\n').map((paragraph, index) => (
+              {article.content?.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {paragraph}
                 </p>
