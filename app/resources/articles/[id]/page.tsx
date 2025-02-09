@@ -11,7 +11,7 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   "Wellness": { bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-700 dark:text-orange-300" },
 };
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
+export default function ArticlePage({ params }: { params: { id: any} }) {
   const article = articleData[Number(params.id) as keyof typeof articleData];
 
   if (!article) {
